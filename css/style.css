@@ -1,0 +1,20 @@
+.btn-purple {
+    background-color: #6f42c1; /* Deixando o fundo roxo */
+    border-color: #6f42c1; /* Cor da borda */
+    color: #ffffff; /* Cor do texto do ícone (Branco)*/
+}
+
+.btn-purple:hover {
+    background-color: #59339d; /* Deixando mais escuro ao passar o mouse */
+    border-color: #59339d;
+    color: #ffffff;
+}
+
+.parallax-bg {
+    background-size: cover;
+    background-position: 0px;
+    background-repeat: no-repeat;
+    min-height: 400px; /* Garantindo que a seção vai ter uma altura legal */
+    position: relative;
+    overflow: hidden;
+}
