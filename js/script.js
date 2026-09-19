@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 window.addEventListener('scroll', function () {
   // Busca todas as seções que têm a classe .parallax-bg
   const parallaxElements = document.querySelectorAll('.parallax-bg');
@@ -73,3 +74,21 @@ function abrirDetalhes (idProjeto) {
     document.getElementById('modalImagem').alt = `Print do projeto ${dados.titulo}`;
   }
 }
+=======
+window.addEventListener('scroll', function () {
+  // Busca todas as seções que têm a classe .parallax-bg
+  const parallaxElements = document.querySelectorAll('.parallax-bg');
+
+  parallaxElements.forEach(function (el) {
+    const scrollPosition = window.scrollY; // Distância do scroll em pixels
+    const elementOffset = el.offsetTop;    // Posição inicial da seção em relação ao topo
+    const speed = 0.35;                    // Velocidade da imagem (quanto menor, mais suave)
+
+    // Calcula a nova posição do fundo
+    const yPos = (scrollPosition - elementOffset) * speed;
+
+    // Aplica no estilo inline do elemento
+    el.style.backgroundPosition = `center ${yPos}px`;
+  });
+});
+>>>>>>> 5377c8022b0b22d22204bf2b1d979fb71527b0b7
