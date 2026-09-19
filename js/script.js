@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-window.addEventListener('scroll', function () {
-  // Busca todas as seções que têm a classe .parallax-bg
-  const parallaxElements = document.querySelectorAll('.parallax-bg');
-
-  parallaxElements.forEach(function (el) {
-    const scrollPosition = window.scrollY; // Distância do scroll em pixels
-    const elementOffset = el.offsetTop;    // Posição inicial da seção em relação ao topo
-    const speed = 0.35;                    // Velocidade da imagem (quanto menor, mais suave)
-
-    // Calcula a nova posição do fundo
-    const yPos = (scrollPosition - elementOffset) * speed;
-
-    // Aplica no estilo inline do elemento
-    el.style.backgroundPosition = `center ${yPos}px`;
-  });
-});
-
-
 // Meu objeto
 const projetos = {
   foodPay: {
@@ -44,7 +25,7 @@ const projetos = {
       </p>
     `,
     link: "https://github.com/PauloRicardo00/Food-Pay.git",
-    imagem: "./img/fundoDarkLebron.jpg"
+    imagem: "./img/fundo-dark-lebron.jpg"
   },
 
   ladingPage: {
@@ -58,7 +39,7 @@ const projetos = {
       <li><b>Exibe no Dashboard:</b> Mostra tudo em tempo real através de painéis simples, gerando alertas, métricas de confiabilidade (MTBF/MTTR) e ordens de serviço.</li>
     </ul>`,
     link: "https://github.com/brugnoloJoao/projeto-integrador-landing-page.git",
-    imagem: "./img/Landing Page.png"
+    imagem: "./img/landing-page.png"
   }
 }
 
@@ -74,7 +55,7 @@ function abrirDetalhes (idProjeto) {
     document.getElementById('modalImagem').alt = `Print do projeto ${dados.titulo}`;
   }
 }
-=======
+
 window.addEventListener('scroll', function () {
   // Busca todas as seções que têm a classe .parallax-bg
   const parallaxElements = document.querySelectorAll('.parallax-bg');
@@ -91,4 +72,3 @@ window.addEventListener('scroll', function () {
     el.style.backgroundPosition = `center ${yPos}px`;
   });
 });
->>>>>>> 5377c8022b0b22d22204bf2b1d979fb71527b0b7
