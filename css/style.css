@@ -12,6 +12,10 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
   overflow: hidden;
 }
 
+#hobby {
+  background-image: url('../img/lebronJames.jpg');
+}
+
 /* Hero */
 .hero { background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)), url(../img/basketballBall.jpg) center/cover; }
 .hero-title { background: rgba(0,0,0,.55); }
@@ -42,6 +46,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 
 /* Hobby */
 .hobby-card { background: rgba(0,0,0,.6); }
+
 
 /* Formulário */
 #formContato .form-control { background: #212529; color: #fff; border-color: #495057; }

@@ -65,7 +65,7 @@ function abrirDetalhes(idProjeto) {
     <div class="carousel-inner">${slides}</div>${controles}</div>`;
 }
 
-// ===== Parallax (leve, e desligado se o usuário preferir menos movimento) =====
+// ===== Parallax com ajuste de posição do LeBron =====
 const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const botaoTopo = document.getElementById('topo');
 let ticking = false;
@@ -74,15 +74,27 @@ function aoRolar() {
   const y = window.scrollY;
   if (!semMovimento) {
     document.querySelectorAll('.parallax-bg').forEach(el => {
-      el.style.backgroundPosition = `center ${(y - el.offsetTop) * 0.35}px`;
+      if (el.id === 'hobby') {
+        // Ajuste exclusivo para o LeBron:
+        // O '-150' define a posição inicial (quanto mais negativo, mais a imagem sobe/mostra o topo).
+        // O '0.25' controla a velocidade do parallax dele.
+        let posicaoY = -440 + (y - el.offsetTop) * 0.25;
+        el.style.backgroundPosition = `center ${posicaoY}px`;
+      } else {
+        // Cálculo padrão para as outras seções do site
+        let posicaoY = (y - el.offsetTop) * 0.35;
+        el.style.backgroundPosition = `center ${posicaoY}px`;
+      }
     });
   }
   botaoTopo.style.display = y > 400 ? 'block' : 'none';
   ticking = false;
 }
+
 window.addEventListener('scroll', () => {
   if (!ticking) { requestAnimationFrame(aoRolar); ticking = true; }
 }, { passive: true });
+
 botaoTopo.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 // ===== Fecha o menu lateral ao clicar num link =====
@@ -115,33 +127,4 @@ document.getElementById('formContato').addEventListener('submit', function (e) {
   window.location.href = `mailto:santossamuel1401@gmail.com?subject=${encodeURIComponent('Contato pelo portfólio - ' + nome)}&body=${encodeURIComponent(corpo)}`;
 });
 
-// Destacar o menu ativo com base na seção visível na tela
-window.addEventListener('DOMContentLoaded', () => {
-  const secoes = document.querySelectorAll('section, header');
-  const navLinks = document.querySelectorAll('.navbar-nav .nav-link, .offcanvas-body .nav-link');
 
-  const observerOptions = {
-    root: null,
-    rootMargin: '-20% 0px -70% 0px', // Ajusta o ponto de ativação no meio da tela
-    threshold: 0
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${id}`) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }, observerOptions);
-
-  secoes.forEach(secao => {
-    observer.observe(secao);
-  });
-});
