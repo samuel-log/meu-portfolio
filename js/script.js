@@ -1,112 +1,116 @@
-// Meu objeto
+// ===== Dados dos projetos =====
 const projetos = {
   foodPay: {
     titulo: "Food-Pay",
-    descricao: `<p>
-        <strong>Food-Pay</strong> é um sistema de gestão financeira para alimentação escolar. 
-        Ele controla pagamentos, alunos e o acompanhamento financeiro da merenda. 
-        Foi desenvolvido por Paulo Ricardo, Samuel Sousa, Yann Freire e Lavynia Vitoria.
-      </p>
-
-      <h6 class="fw-bold mt-3">Tecnologias</h6>
-      <ul class="ps-3">
-        <li><strong>Frontend:</strong> React 18 + Vite</li>
-        <li><strong>Backend:</strong> .NET 8 / C# (API com Controllers e Models)</li>
-        <li><strong>Banco de dados:</strong> SQL Server</li>
-        <li><strong>Autenticação:</strong> JWT</li>
-        <li><strong>Pagamentos:</strong> Stripe</li>
-      </ul>
-
-      <p class="mb-0">
-        <strong>Estrutura:</strong> são três pastas na raiz: 
-        <code>Food-Pay/</code> (frontend), 
-        <code>FoodPay_API/</code> (backend) e 
-        <code>database/</code> (scripts SQL).
-      </p>
-    `,
-    link: "https://github.com/PauloRicardo00/Food-Pay.git",
-    imagens: ["./img/fundo-dark-lebron.jpg"] // Se tiver mais fotos aqui depois, é só colocar vírgula e adicionar entre aspas
+    tags: ["React 18", "Vite", ".NET 8 / C#", "SQL Server", "JWT", "Stripe"],
+    descricao: `<p><strong>Food-Pay</strong> é um sistema de gestão financeira para alimentação escolar.
+        Ele controla pagamentos, alunos e o acompanhamento financeiro da merenda.
+        Foi desenvolvido por Paulo Ricardo, Samuel Sousa, Yann Freire e Lavynia Vitoria.</p>
+      <p><strong>Meu papel:</strong> desenvolvimento do frontend (React).</p>
+      <p class="mb-0"><strong>Estrutura:</strong> três pastas na raiz:
+        <code>Food-Pay/</code> (frontend), <code>FoodPay_API/</code> (backend) e <code>database/</code> (scripts SQL).</p>`,
+    linkRepo: "https://github.com/PauloRicardo00/Food-Pay",
+    linkSite: "",
+    imagens: [] // Adicione prints em ./img/ e liste aqui, ex.: "./img/foodpay1.png"
   },
 
-  ladingPage: {
-    titulo: "Lading Page",
-    descricao: `<p><strong>Landing Page</strong> é uma plataforma web que funciona como uma "torre de controle" para a manutenção preditiva em refinarias de petróleo. 
-    Utilizamos o HTML bootstrap no desenvolvimento.</p>
+  landingPage: {
+    titulo: "Landing Page",
+    tags: ["HTML", "Bootstrap"],
+    descricao: `<p>Landing page do nosso produto do Projeto Integrador: uma plataforma web que funciona como uma "torre de controle" para a manutenção preditiva em refinarias de petróleo, desenvolvida com HTML e Bootstrap.</p>
     <h6>O que ele faz?</h6>
     <ul>
       <li><b>Coleta dados:</b> Conecta sensores industriais e sistemas antigos (SCADA) via protocolos industriais (OPC UA / MQTT).</li>
       <li><b>Prevê falhas:</b> Usa Ciência de Dados para identificar anomalias e prever quebras antes que a produção pare.</li>
       <li><b>Exibe no Dashboard:</b> Mostra tudo em tempo real através de painéis simples, gerando alertas, métricas de confiabilidade (MTBF/MTTR) e ordens de serviço.</li>
     </ul>`,
-    linkRepo: "https://github.com/brugnoloJoao/projeto-integrador-landing-page.git",
+    linkRepo: "https://github.com/brugnoloJoao/projeto-integrador-landing-page",
     linkSite: "https://brugnolojoao.github.io/projeto-integrador-landing-page/",
-    imagens: [
-      "./img/landing-page2.png",
-      "./img/landing-page3.png",
-      "./img/landing-page4.png",
-      "./img/landing-page5.png",
-      "./img/landing-page6.png",
-      "./img/landing-page7.png"
-    ]
+    imagens: ["./img/landing-page2.png", "./img/landing-page3.png", "./img/landing-page4.png",
+              "./img/landing-page5.png", "./img/landing-page6.png", "./img/landing-page7.png"]
   }
-}
+};
 
 function abrirDetalhes(idProjeto) {
-  const dados = projetos[idProjeto];
+  const d = projetos[idProjeto];
+  if (!d) return;
 
-  if (dados) {
-    document.getElementById('modalTitulo').innerText = dados.titulo;
-    document.getElementById('modalDescricao').innerHTML = dados.descricao;
-    document.getElementById('modalAcessar').href = dados.linkRepo;
-    document.getElementById('modalAcessarSite').href = dados.linkSite;
+  document.getElementById('modalTitulo').innerText = d.titulo;
+  document.getElementById('modalDescricao').innerHTML = d.descricao;
+  document.getElementById('modalTags').innerHTML =
+    d.tags.map(t => `<span class="badge text-bg-secondary me-1">${t}</span>`).join('');
 
-    // 1. Cria o HTML das imagens em formato de carrossel do Bootstrap
-    let slidesHtml = '';
-    dados.imagens.forEach((imgSrc, index) => {
-      // O primeiro item do carrossel precisa obrigatóriamente ter a classe 'active'
-      const classeAtiva = index === 0 ? 'active' : '';
-      
-      slidesHtml += `
-        <div class="carousel-item ${classeAtiva}">
-          <img src="${imgSrc}" class="d-block w-100 rounded" alt="Print do projeto ${dados.titulo}">
-        </div>
-      `;
-    });
+  const repo = document.getElementById('modalAcessar');
+  const site = document.getElementById('modalAcessarSite');
+  repo.classList.toggle('d-none', !d.linkRepo);
+  site.classList.toggle('d-none', !d.linkSite);
+  if (d.linkRepo) repo.href = d.linkRepo;
+  if (d.linkSite) site.href = d.linkSite;
 
-    // 2. Insere a estrutura completa do carrossel dentro do HTML onde ficava a imagem antiga
-    const containerCarrossel = document.getElementById('containerModalCarrossel');
-    containerCarrossel.innerHTML = `
-      <div id="carouselProjetoModal" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          ${slidesHtml}
-        </div>
-        
-        <!-- Seta da Esquerda -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselProjetoModal" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Anterior</span>
-        </button>
-        
-        <!-- Seta da Direita -->
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselProjetoModal" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Próximo</span>
-        </button>
-      </div>
-    `;
-  }
+  const cont = document.getElementById('containerModalCarrossel');
+  if (!d.imagens.length) { cont.innerHTML = ''; return; }
+
+  const slides = d.imagens.map((src, i) => `
+    <div class="carousel-item ${i === 0 ? 'active' : ''}">
+      <img src="${src}" class="d-block w-100 rounded" alt="Print ${i + 1} do projeto ${d.titulo}" loading="lazy">
+    </div>`).join('');
+  const controles = d.imagens.length > 1 ? `
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProjetoModal" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselProjetoModal" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Próximo</span>
+    </button>` : '';
+  cont.innerHTML = `<div id="carouselProjetoModal" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">${slides}</div>${controles}</div>`;
 }
 
-window.addEventListener('scroll', function () {
-  const parallaxElements = document.querySelectorAll('.parallax-bg');
+// ===== Parallax (leve, e desligado se o usuário preferir menos movimento) =====
+const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const botaoTopo = document.getElementById('topo');
+let ticking = false;
 
-  parallaxElements.forEach(function (el) {
-    const scrollPosition = window.scrollY; 
-    const elementOffset = el.offsetTop;    
-    const speed = 0.35;                   
+function aoRolar() {
+  const y = window.scrollY;
+  if (!semMovimento) {
+    document.querySelectorAll('.parallax-bg').forEach(el => {
+      el.style.backgroundPosition = `center ${(y - el.offsetTop) * 0.35}px`;
+    });
+  }
+  botaoTopo.style.display = y > 400 ? 'block' : 'none';
+  ticking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!ticking) { requestAnimationFrame(aoRolar); ticking = true; }
+}, { passive: true });
+botaoTopo.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    const yPos = (scrollPosition - elementOffset) * speed;
+// ===== Fecha o menu lateral ao clicar num link =====
+document.querySelectorAll('#menuLateral .nav-link').forEach(link =>
+  link.addEventListener('click', () => bootstrap.Offcanvas.getInstance(document.getElementById('menuLateral'))?.hide()));
 
-    el.style.backgroundPosition = `center ${yPos}px`;
-  });
+// ===== Animação de entrada =====
+const alvos = document.querySelectorAll('.card, .skill, .hobby-card, #formContato');
+alvos.forEach(el => el.classList.add('reveal'));
+if ('IntersectionObserver' in window) {
+  const obs = new IntersectionObserver((itens) => itens.forEach(i => {
+    if (i.isIntersecting) { i.target.classList.add('visivel'); obs.unobserve(i.target); }
+  }), { threshold: 0.15 });
+  alvos.forEach(el => obs.observe(el));
+} else alvos.forEach(el => el.classList.add('visivel'));
+
+// ===== Currículo: só aparece se o PDF existir em docs/curriculo-samuel.pdf =====
+fetch('./docs/curriculo-samuel.pdf', { method: 'HEAD' })
+  .then(r => { if (r.ok) document.querySelectorAll('.btn-curriculo').forEach(b => b.classList.remove('d-none')); })
+  .catch(() => {});
+
+// ===== Formulário de contato (abre o app de e-mail, sem back-end) =====
+document.getElementById('formContato').addEventListener('submit', function (e) {
+  e.preventDefault();
+  if (!this.checkValidity()) { this.classList.add('was-validated'); return; }
+  const nome = document.getElementById('cNome').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const msg = document.getElementById('cMsg').value.trim();
+  const corpo = `${msg}\n\n— ${nome} (${email})`;
+  window.location.href = `mailto:santossamuel1401@gmail.com?subject=${encodeURIComponent('Contato pelo portfólio - ' + nome)}&body=${encodeURIComponent(corpo)}`;
 });
