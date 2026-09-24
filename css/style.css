@@ -12,10 +12,6 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
   overflow: hidden;
 }
 
-#hobby {
-  background-image: url('../img/lebronJames.jpg');
-}
-
 /* Hero */
 .hero { background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)), url(../img/basketballBall.jpg) center/cover; }
 .hero-title { background: rgba(0,0,0,.55); }
