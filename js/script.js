@@ -10,8 +10,11 @@ const projetos = {
       <p class="mb-0"><strong>Estrutura:</strong> três pastas na raiz:
         <code>Food-Pay/</code> (frontend), <code>FoodPay_API/</code> (backend) e <code>database/</code> (scripts SQL).</p>`,
     linkRepo: "https://github.com/PauloRicardo00/Food-Pay",
-    linkSite: "",
-    imagens: [] // Adicione prints em ./img/ e liste aqui, ex.: "./img/foodpay1.png"
+    linkSite: "https://pauloricardo00.github.io/Food-Pay/#/",
+    imagens: [
+      "./img/food-pay.png",
+      "./img/food-pay-responsavel.png"
+    ] // Adicione prints em ./img/ e liste aqui, ex.: "./img/foodpay1.png"
   },
 
   landingPage: {
@@ -126,5 +129,41 @@ document.getElementById('formContato').addEventListener('submit', function (e) {
   const corpo = `${msg}\n\n— ${nome} (${email})`;
   window.location.href = `mailto:santossamuel1401@gmail.com?subject=${encodeURIComponent('Contato pelo portfólio - ' + nome)}&body=${encodeURIComponent(corpo)}`;
 });
+
+// ===== Scroll Spy via JavaScript (Destacar menu ativo) =====
+const secoes = document.querySelectorAll('section[id], header[id]'); // pega as seções que têm ID
+const linksMenu = document.querySelectorAll('.navbar-nav .nav-link');
+
+function destacarMenuAtivo() {
+  const scrollY = window.pageYOffset;
+
+  secoes.forEach(secao => {
+    const alturaSecao = secao.offsetHeight;
+    const topoSecao = secao.offsetTop - 100; // margem de tolerância de 100px
+    const idSecao = secao.getAttribute('id');
+
+    if (scrollY >= topoSecao && scrollY < topoSecao + alturaSecao) {
+      linksMenu.forEach(link => {
+        link.classList.remove('ativo');
+        // Se o href do link corresponder ao id da seção, ativa ele
+        if (link.getAttribute('href') === `#${idSecao}`) {
+          link.classList.add('ativo');
+        }
+      });
+    }
+  });
+}
+
+// Adiciona o evento de scroll aproveitando o mesmo otimizador que já temos (ticking / requestAnimationFrame)
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      aoRolar();
+      destacarMenuAtivo();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
 
 

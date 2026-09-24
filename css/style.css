@@ -22,8 +22,22 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 .title-pill { background: #212529; }
 
 /* Navbar */
-.navbar .nav-link.active { color: #fff; font-weight: 700; border-bottom: 2px solid #dc3545; }
-#menuLateral .nav-link.active { color: #dc3545 !important; }
+/* Estilo do link ativo na Navbar */
+.navbar-nav .nav-link.ativo {
+  color: #fff !important;
+  position: relative;
+}
+
+/* A barrinha vermelha embaixo do link ativo */
+.navbar-nav .nav-link.ativo::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 15px;
+  right: 15px;
+  height: 2px;
+  background-color: #dc3545; /* Vermelho padrão do Bootstrap */
+}
 
 /* Habilidades */
 .skill { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem 1rem; border: 1px solid #495057; border-radius: 50rem; background: #212529; transition: transform .2s, border-color .2s; }
