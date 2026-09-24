@@ -51,8 +51,21 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 #topo { position: fixed; right: 1rem; bottom: 1rem; width: 48px; height: 48px; display: none; z-index: 1030; }
 
 /* Animação de entrada */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s, transform .6s; }
-.reveal.visivel { opacity: 1; transform: none; }
+.reveal { 
+  opacity: 0; 
+  transform: translateY(24px);
+  visibility: hidden; /* Garante que ele não afeta o layout enquanto invisível */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out, visibility 0.6s;
+  will-change: opacity, transform; /* Ajuda o navegador a otimizar a animação*/
+}
+
+/* Quando o elemento entra na tela */
+.reveal.visivel { 
+  opacity: 1; 
+  transform: translateY(0); 
+  visibility: visible;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }

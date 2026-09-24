@@ -114,3 +114,34 @@ document.getElementById('formContato').addEventListener('submit', function (e) {
   const corpo = `${msg}\n\n— ${nome} (${email})`;
   window.location.href = `mailto:santossamuel1401@gmail.com?subject=${encodeURIComponent('Contato pelo portfólio - ' + nome)}&body=${encodeURIComponent(corpo)}`;
 });
+
+// Destacar o menu ativo com base na seção visível na tela
+window.addEventListener('DOMContentLoaded', () => {
+  const secoes = document.querySelectorAll('section, header');
+  const navLinks = document.querySelectorAll('.navbar-nav .nav-link, .offcanvas-body .nav-link');
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -70% 0px', // Ajusta o ponto de ativação no meio da tela
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${id}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, observerOptions);
+
+  secoes.forEach(secao => {
+    observer.observe(secao);
+  });
+});
