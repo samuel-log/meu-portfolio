@@ -3,6 +3,14 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 .btn-purple { background-color: #6f42c1; border-color: #6f42c1; color: #fff; }
 .btn-purple:hover { background-color: #59339d; border-color: #59339d; color: #fff; }
 
+/* =========================================================
+   PARALLAX — reescrito para usar transform (GPU) em vez de
+   background-position (que força repaint a cada scroll).
+   A imagem de fundo agora fica num ::before absoluto, maior
+   que a seção (por isso o inset negativo), e é esse ::before
+   que se move via translate3d. O conteúdo da seção (.container)
+   fica acima dele com z-index.
+   ========================================================= */
 .parallax-bg {
   background-size: cover;
   background-position: center;
@@ -12,7 +20,26 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
   overflow: hidden;
 }
 
-/* Hero */
+.parallax-bg::before {
+  content: "";
+  position: absolute;
+  inset: -80px 0; /* margem extra pra o translate não revelar bordas vazias */
+  background-image: inherit;   /* pega a mesma imagem definida inline/CSS na seção */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+  will-change: transform;
+  z-index: 0;
+}
+
+/* conteúdo da seção precisa ficar acima do pseudo-elemento */
+.parallax-bg > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero (estático, sem parallax via JS) */
 .hero { background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)), url(../img/basketballBall.jpg) center/cover; }
 .hero-title { background: rgba(0,0,0,.55); }
 
@@ -22,13 +49,10 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 .title-pill { background: #212529; }
 
 /* Navbar */
-/* Estilo do link ativo na Navbar */
 .navbar-nav .nav-link.ativo {
   color: #fff !important;
   position: relative;
 }
-
-/* A barrinha vermelha embaixo do link ativo */
 .navbar-nav .nav-link.ativo::after {
   content: '';
   position: absolute;
@@ -36,7 +60,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
   left: 15px;
   right: 15px;
   height: 2px;
-  background-color: #dc3545; /* Vermelho padrão do Bootstrap */
+  background-color: #dc3545;
 }
 
 /* Habilidades */
@@ -57,13 +81,27 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 /* Hobby */
 .hobby-card { background: rgba(0,0,0,.6); }
 
-
 /* Formulário */
 #formContato .form-control { background: #212529; color: #fff; border-color: #495057; }
 #formContato .form-floating > label { color: #adb5bd; }
 
 /* Voltar ao topo */
 #topo { position: fixed; right: 1rem; bottom: 1rem; width: 48px; height: 48px; display: none; z-index: 1030; }
+
+/* =========================================================
+   CARROSSEL DO MODAL — evita "piscada" ao trocar de imagem:
+   altura fixa via aspect-ratio pra não pular layout, e
+   transição de opacidade suave entre slides do Bootstrap.
+   ========================================================= */
+#containerModalCarrossel img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+  background: #000; /* evita "flash" branco enquanto decodifica */
+}
+#containerModalCarrossel .carousel-item {
+  transition: opacity .5s ease-in-out;
+}
 
 /* Animação de entrada */
 .reveal { 
@@ -85,4 +123,5 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .card, .skill { transition: none; }
+  .parallax-bg::before { transform: none !important; }
 }
