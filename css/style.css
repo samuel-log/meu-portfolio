@@ -1,18 +1,57 @@
-html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+/* O scroll suave é feito 100% pelo JavaScript (igual em todo navegador).
+   O CSS nativo precisa ficar "auto", senão os dois brigam e trava. */
+html,
+:root { scroll-behavior: auto !important; }
+html { scroll-padding-top: 70px; }
 
 .btn-purple { background-color: #6f42c1; border-color: #6f42c1; color: #fff; }
 .btn-purple:hover { background-color: #59339d; border-color: #59339d; color: #fff; }
 
+/* =========================================================
+   PARALLAX — funciona igual em qualquer navegador.
+   Não usa background-attachment: fixed (quebra no iOS/Safari) nem
+   background-position (causa repaint). A imagem fica num pseudo-elemento
+   maior que a seção e se move só com transform (GPU).
+   O JS controla --parallax-y. Sobra de 140px acima/abaixo da imagem:
+   o deslocamento máximo (120px) nunca deixa aparecer borda.
+   ========================================================= */
 .parallax-bg {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   min-height: 400px;
-  position: relative;
-  overflow: hidden;
 }
 
-/* Hero */
+.parallax-bg::before {
+  content: "";
+  position: absolute;
+  top: -140px;
+  bottom: -140px;
+  left: 0;
+  right: 0;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: translate3d(0, var(--parallax-y, 0px), 0) scale(1.04);
+  transform-origin: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* O conteúdo continua acima da imagem de fundo. */
+.parallax-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero (estático, sem parallax via JS) */
 .hero { background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)), url(../img/basketballBall.jpg) center/cover; }
 .hero-title { background: rgba(0,0,0,.55); }
 
@@ -21,22 +60,43 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 .hobby-card .section-title::after { margin-left: 0; }
 .title-pill { background: #212529; }
 
-/* Navbar */
-/* Estilo do link ativo na Navbar */
-.navbar-nav .nav-link.ativo {
-  color: #fff !important;
+/* =========================================================
+   NAVBAR — transições suaves
+   ========================================================= */
+.navbar-brand { transition: opacity .35s ease, transform .35s cubic-bezier(.22, 1, .36, 1); }
+.navbar-brand:hover { opacity: .85; transform: translateY(-1px); }
+
+.navbar-nav .nav-link {
+  transition: color .35s ease;
   position: relative;
 }
 
-/* A barrinha vermelha embaixo do link ativo */
-.navbar-nav .nav-link.ativo::after {
-  content: '';
+/* Sublinhado sempre existe e "cresce" do centro (em vez de aparecer de repente). */
+.navbar-nav .nav-link::after {
+  content: "";
   position: absolute;
   bottom: 0;
   left: 15px;
   right: 15px;
   height: 2px;
-  background-color: #dc3545; /* Vermelho padrão do Bootstrap */
+  border-radius: 2px;
+  background: #dc3545;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+
+.navbar-nav .nav-link.ativo {
+  color: #fff !important;
+}
+
+.navbar-nav .nav-link.ativo::after {
+  transform: scaleX(1);
+}
+
+/* Menu lateral (mobile) desliza com desaceleração suave */
+.offcanvas {
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1);
 }
 
 /* Habilidades */
@@ -57,32 +117,94 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 /* Hobby */
 .hobby-card { background: rgba(0,0,0,.6); }
 
-
 /* Formulário */
 #formContato .form-control { background: #212529; color: #fff; border-color: #495057; }
 #formContato .form-floating > label { color: #adb5bd; }
 
-/* Voltar ao topo */
-#topo { position: fixed; right: 1rem; bottom: 1rem; width: 48px; height: 48px; display: none; z-index: 1030; }
-
-/* Animação de entrada */
-.reveal { 
-  opacity: 0; 
-  transform: translateY(24px);
-  visibility: hidden; /* Garante que ele não afeta o layout enquanto invisível */
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out, visibility 0.6s;
-  will-change: opacity, transform; /* Ajuda o navegador a otimizar a animação*/
+/* Botões em geral: hover mais macio */
+.btn {
+  transition: color .3s ease, background-color .3s ease, border-color .3s ease, box-shadow .3s ease;
 }
 
-/* Quando o elemento entra na tela */
-.reveal.visivel { 
-  opacity: 1; 
-  transform: translateY(0); 
+/* Voltar ao topo: aparece/desaparece com fade + subida suave */
+#topo {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 48px;
+  height: 48px;
+  display: block;
+  z-index: 1030;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 16px, 0) scale(.9);
+  transition: opacity .4s ease, transform .5s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .5s, background-color .3s ease, border-color .3s ease;
+}
+#topo.mostrar {
+  opacity: 1;
   visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition: opacity .4s ease, transform .5s cubic-bezier(.22, 1, .36, 1), visibility 0s, background-color .3s ease, border-color .3s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .card, .skill { transition: none; }
+/* =========================================================
+   MODAL, FADE, COLLAPSE — animações suaves e fixas
+   (independem da configuração de "reduzir movimento" do sistema)
+   ========================================================= */
+.fade {
+  transition: opacity .45s ease;
+}
+
+.modal.fade .modal-dialog {
+  transform: translate3d(0, 40px, 0) scale(.96);
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+.modal.show .modal-dialog {
+  transform: none;
+}
+
+.collapsing {
+  transition: height .5s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* =========================================================
+   CARROSSEL DO MODAL — dissolução (crossfade) suave entre slides.
+   O JS adiciona a classe .carousel-fade. Antes, o transition de opacity
+   sobrescrevia o do Bootstrap e causava a piscada.
+   O atraso de 0.8s do slide que sai precisa ser IGUAL à duração do fade.
+   ========================================================= */
+#containerModalCarrossel img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+  background: #000; /* evita "flash" branco enquanto decodifica */
+}
+
+#containerModalCarrossel .carousel-fade .carousel-item {
+  transition: opacity .8s ease-in-out;
+  will-change: opacity;
+}
+#containerModalCarrossel .carousel-fade .active.carousel-item-start,
+#containerModalCarrossel .carousel-fade .active.carousel-item-end {
+  transition: opacity 0s .8s;
+}
+
+#containerModalCarrossel .carousel-control-prev,
+#containerModalCarrossel .carousel-control-next {
+  transition: opacity .4s ease;
+}
+
+/* Animação de entrada ao rolar a página */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  visibility: hidden;
+  transition: opacity .65s ease, transform .65s cubic-bezier(.22, 1, .36, 1), visibility .65s;
+  will-change: opacity, transform;
+}
+
+.reveal.visivel {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
 }
