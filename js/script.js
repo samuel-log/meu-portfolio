@@ -12,8 +12,10 @@ const projetos = {
     linkRepo: "https://github.com/PauloRicardo00/Food-Pay",
     linkSite: "https://pauloricardo00.github.io/Food-Pay/#/",
     imagens: [
-      "./img/food-pay.png",
-      "./img/food-pay-responsavel.png"
+      "./img/food-pay/food-pay.png",
+      "./img/food-pay/food-pay-responsavel.png",
+      "./img/food-pay/food-pay-painel-responsavel.png",
+      "./img/food-pay/food-pay-painel-funcionario.png"
     ]
   },
 
@@ -29,8 +31,8 @@ const projetos = {
     </ul>`,
     linkRepo: "https://github.com/brugnoloJoao/projeto-integrador-landing-page",
     linkSite: "https://brugnolojoao.github.io/projeto-integrador-landing-page/",
-    imagens: ["./img/landing-page2.png", "./img/landing-page3.png", "./img/landing-page4.png",
-              "./img/landing-page5.png", "./img/landing-page6.png", "./img/landing-page7.png"]
+    imagens: ["./img/landing-page/landing-page2.png", "./img/landing-page/landing-page3.png", "./img/landing-page/landing-page4.png",
+              "./img/landing-page/landing-page5.png", "./img/landing-page/landing-page6.png", "./img/landing-page/landing-page7.png"]
   }
 };
 
